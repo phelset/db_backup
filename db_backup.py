@@ -50,7 +50,6 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Database weekly rolling backup script. Supports MySQL and PostgreSQL.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-c', default='backup.ini', metavar='file', help='Configuration file')
     parser.add_argument('-o', default=os.curdir, metavar='directory', help='Output directory')
-    #parser.add_argument('-s', help='Section(s), comma separated list of sections to run')
     args = parser.parse_args()
     conf = args.c
     output = args.o
@@ -96,8 +95,7 @@ def dump_database(config):
     else:
         compress_file(config, filename)
 
-    if config.dbtype == 'pgsql':
-        del os.environ['PGPASSWORD']
+    os.unsetenv('PGPASSWORD')
  
 def compress_file(config, filename):
     file = os.path.join(config.outputdir, filename)
